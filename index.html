@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Local Weather</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <style>
+    	p {
+			display: inline-block;
+    	}
+    	.container {
+    		width:500px;
+    		height: 200px;
+    		border: solid red 2px;
+    		border-radius: 25px;
+    		margin: 0 auto;
+    		background-color: #e16b8c;
+    	}
+    	.row {
+    		margin-left: 30px;
+    	}
+    	.row:first-child{
+    		margin-top: 10px;
+    	}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <p>所在城市:</p>
+            <p class="city"></p>
+        </div>
+        <div class="row">
+        	<p>日期：</p>
+        	<p class="date"></p>
+        </div>
+        <div class="row">
+        	<p>穿衣建议：</p>
+        	<p class="dressAdvice"></p>
+        </div>
+        <div class="row">
+        	<p>温度：</p>
+        	<p class="temperature"></p>
+        </div>
+        <div class="row">
+        	<p>天气：</p>
+        	<p class="weather"></p>
+        </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+        $.getJSON("http://jsonip.com/?callback=?", function(data) {
+            ip = data.ip;
+            var params = {
+                ip: ip,
+                key: "3389332ccbc10c49369a1b1159b4101c"
+            };
+
+            $.ajax({
+                url: "http://v.juhe.cn/weather/ip?" + $.param(params),
+                type: "GET",
+                dataType: "jsonp",
+                success: function(data) {
+                    var info = data.result.today;
+                    console.log(info);
+                    $('.city').text(info.city);
+                    $('.date').text(info.date_y);
+                    $('.dressAdvice').text(info.dressing_advice);
+                    $('.temperature').text(info.temperature);
+                    $('.weather').text(info.weather);
+                }
+            });
+
+        });
+
+    });
+    </script>
+</body>
+
+</html>
